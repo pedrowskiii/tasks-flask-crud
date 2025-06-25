@@ -14,7 +14,7 @@ task_id_control = 1
 @app.route('/tasks', methods=['POST'])
 def create_task():
     global task_id_control
-    data = request.get_json()
+    data = request.get_json() # recuperar o que o cliente enviou  
     new_task = Task(id= task_id_control,title=data['title'], description=data.get('description', ''),)
     task_id_control += 1
     tasks.append(new_task)
@@ -31,7 +31,7 @@ def get_tasks():
         }
     return jsonify(output)
 
-@app.route('/tasks/<int:id>', methods=['GET'])
+@app.route('/tasks/<int:id>', methods=['GET']) # <> -> identificador 
 def get_task(id):
     
     for t in tasks:
@@ -40,13 +40,14 @@ def get_task(id):
         
     return jsonify({"message": 'Não foi possível encontrar a atividade'}), 404
 
-@app.route('tasks/<int:id>', method=['PUT'])
+@app.route('tasks/<int:id>', method=['PUT']) 
 def update_task(id):
    
     task = None
     for t in tasks:
         if t.id == id:
             task = t
+            break
     
     if task == None:
         return jsonify({"message": 'Não foi possível encontrar a atividade'}), 404
@@ -58,7 +59,7 @@ def update_task(id):
     
     return jsonify({"message": 'Tarefa atualizada com sucesso'}), 200
 
-@app.route('/tasks/<>int:id', method=['DELETE']) # metodo delete
+@app.route('/tasks/<>int:id', method=['DELETE'])
 def delete_task(id):
     task = None
     for t in tasks:
@@ -70,7 +71,7 @@ def delete_task(id):
         return jsonify({"message": 'Não foi possível encontrar a atividade'}), 404
     
     tasks.remove(task)
-    return jsonify({"message": 'Tarefa deletada com sucesso'})       
+    return jsonify({"message": 'Tarefa deletada com sucesso'}) # como é 200 n precisa colocar, por padrao ela é 200 
      
 if __name__ == '__main__':
     app.run(debug=True)
